@@ -1,0 +1,19 @@
+language: go
+install: true
+sudo: false
+go_import_path: github.com/simon/env-secrets
+env:
+  global:
+  - GO111MODULE=on
+  - secure: FCKxWIg/kkt7bKaoa8hyFSzOJ96hAoL0UWVHGh21IktTBZXIjZ3KEuRU6QdX3oUOrohHfYOsWkIz1fvRmP5oP0vQeL7pkM1CpZk6+crjALyRbV2l5Tlv4ca4OVjBhPe3lJ7okTgsiASO1muUeRnvPS4BHqoxTiEZVUMkRGg8ONvNVpukNWOG7okQcnoaMS6QAOz2KnPhFfok5pokHXKX6JvV9zPtsHA/coLwQFzOem9PYPK+nWslsbCdKhfN9jfRj/Ocie/6AV9s8OQpbh2wCrA3qH6zeUG078ymVuKGuY4B3nwsjyQUQVnU1XJkRGRR/WJRNuAffBwTAcl8h2y9yht+ETKFHBJfBGT7f4qoFjgoc8qi0qvWELYFY8tZL76r3YQVvUKSoaIqai5KcV16SXrDs2YXACCLKOoe8xbMg6cD1pLmjgsiA7g2E3DqsQFGtfIpl+1+3yLb35Pd4nOCDMD/j2582HXoi2V8NkiHsava1q5szIcmTuAkGpbJx6tJa1/WG539ATadAntkmb50sDVhLhb8No+06fO3ZDpdaTLd7Lk9xqkIW825KdkjXO5jx/uo4P4dU4iSEtIxZp7jF+DQ2Qlkr3eW+LrBR9+4a9ttixhOSMz2q89pwzNtDGvxO5410KFzjdH7J9wagTtfKAvQVAPHokjaqT6Wj9IMHGM=
+matrix:
+  include:
+  - go: 1.10.x
+    script:
+    - go get -t -v ./...
+    - go test -v github.com/sganon/env-secrets/...
+  - go: 1.11.x
+    script:
+    - go test -race -v github.com/sganon/env-secrets/... -coverprofile=coverage.txt
+      -covermode=atomic
+    - bash <(curl -s https://codecov.io/bash)
