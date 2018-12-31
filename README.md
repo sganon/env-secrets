@@ -1,4 +1,7 @@
 # env-secrets
+[![Build Status](https://travis-ci.org/sganon/env-secrets.svg?branch=master)](https://travis-ci.org/sganon/env-secrets)
+[![codecov](https://codecov.io/gh/sganon/env-secrets/branch/master/graph/badge.svg)](https://codecov.io/gh/sganon/env-secrets)
+
 Securely fetch and set env secrets needed for a project using Bitwarden or 1password CLI
 
 ![](img/env-secrets_bw.gif)
