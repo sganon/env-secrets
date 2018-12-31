@@ -17,7 +17,7 @@ func NewBW() cli.Command {
 		Before: beforeChecksBW,
 		Action: func(c *cli.Context) (err error) {
 			bw := bitwarden.BW{}
-			if err = bw.SetFolderID(c.Args().Get(0)); err != nil {
+			if err = bw.SetFoldersIDs(c.Args()); err != nil {
 				return err
 			}
 			if err = bw.FetchItems(); err != nil {
@@ -31,8 +31,8 @@ func NewBW() cli.Command {
 }
 
 func beforeChecksBW(c *cli.Context) error {
-	if len(c.Args()) != 1 {
-		return fmt.Errorf("env-secrets error: bw command accepts only 1 arguments but got %d", len(c.Args()))
+	if len(c.Args()) < 1 {
+		return fmt.Errorf("env-secrets error: you need to provide at least one folder")
 	}
 	if os.Getenv("BW_SESSION") == "" {
 		return fmt.Errorf("env-secrets error: bw session isn't set, bitwarden CLI must be installed and logged in")
