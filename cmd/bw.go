@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sganon/env-secrets/bitwarden"
+	"github.com/sganon/env-secrets/common"
 	"github.com/urfave/cli"
 )
 
@@ -15,7 +16,14 @@ func NewBW() cli.Command {
 		Usage:  "Get secrets from your bitwarden vault",
 		Before: beforeChecks,
 		Action: func(c *cli.Context) (err error) {
-			log.Debugf("Calling bw with category: %s\n", c.Args().Get(0))
+			bw := bitwarden.BW{}
+			if err = bw.SetFolderID(c.Args().Get(0)); err != nil {
+				return err
+			}
+			if err = bw.FetchItems(); err != nil {
+				return err
+			}
+			common.OutputEnv(bw)
 			return err
 		},
 	}

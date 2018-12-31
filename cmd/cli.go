@@ -12,7 +12,7 @@ const (
 	logLevelFlagName = "logLevel"
 )
 
-// NewCLI retunr a new CLI
+// NewCLI returns a new CLI
 // it contains basic info such as version, authors, etc..
 // but also wraps subcommands like bw and op
 func NewCLI() *cli.App {
