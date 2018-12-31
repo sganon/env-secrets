@@ -38,6 +38,7 @@ func NewCLI() *cli.App {
 
 	app.Commands = []cli.Command{
 		NewBW(),
+		NewOP(),
 	}
 
 	return app

@@ -1,10 +1,9 @@
 package bitwarden
 
 import (
-	"encoding/json"
 	"fmt"
-	"os/exec"
 
+	"github.com/sganon/env-secrets/common"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -21,17 +20,12 @@ type BW struct {
 // SetFolderID fetch and set folder id by getting it by name
 // If more than one folder match with folderName the first one will be choosed
 func (bw *BW) SetFolderID(folderName string) error {
-	cmd := exec.Command(bwBinary, "list", "folders", "--search", folderName)
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return err
-	}
-	if err = cmd.Start(); err != nil {
-		return err
-	}
 	var results []FolderSearch
-	if err := json.NewDecoder(stdout).Decode(&results); err != nil {
-		return err
+	err := common.ExecCLI(bwBinary, []string{
+		"list", "folders", "--search", folderName,
+	}, &results)
+	if err != nil {
+		return fmt.Errorf("env-secrets error: an error occured while setting folderIDs: %v", err)
 	}
 	if len(results) == 0 {
 		return fmt.Errorf("env-secrets error: unable to match folder with name %s", folderName)
@@ -48,7 +42,7 @@ func (bw *BW) FetchItems() error {
 		panic("unable to fetch from unknow folder, please set folderID before")
 	}
 	var results []Item
-	err := execBW([]string{"list", "items", "--folderid", string(bw.folderID)}, &results)
+	err := common.ExecCLI(bwBinary, []string{"list", "items", "--folderid", string(bw.folderID)}, &results)
 	if err != nil {
 		return fmt.Errorf("env-secrets error: an error occured fetching items in folder with id %s: %v", bw.folderID, err)
 	}
@@ -57,21 +51,6 @@ func (bw *BW) FetchItems() error {
 	}
 	for _, item := range results {
 		bw.values[item.Name] = item.Notes
-	}
-	return nil
-}
-
-func execBW(args []string, output interface{}) error {
-	cmd := exec.Command(bwBinary, args...)
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return err
-	}
-	if err = cmd.Start(); err != nil {
-		return err
-	}
-	if err := json.NewDecoder(stdout).Decode(&output); err != nil {
-		return err
 	}
 	return nil
 }

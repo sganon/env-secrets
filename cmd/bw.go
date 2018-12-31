@@ -14,7 +14,7 @@ func NewBW() cli.Command {
 	cmd := cli.Command{
 		Name:   "bw",
 		Usage:  "Get secrets from your bitwarden vault",
-		Before: beforeChecks,
+		Before: beforeChecksBW,
 		Action: func(c *cli.Context) (err error) {
 			bw := bitwarden.BW{}
 			if err = bw.SetFolderID(c.Args().Get(0)); err != nil {
@@ -30,7 +30,7 @@ func NewBW() cli.Command {
 	return cmd
 }
 
-func beforeChecks(c *cli.Context) error {
+func beforeChecksBW(c *cli.Context) error {
 	if len(c.Args()) != 1 {
 		return fmt.Errorf("env-secrets error: bw command accepts only 1 arguments but got %d", len(c.Args()))
 	}
