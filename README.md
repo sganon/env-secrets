@@ -17,7 +17,7 @@ Both commands works the same way: you first need to organize your secrets into f
 
 Then you should be able to do:
 ```shell
-env-secrets [bw || op] [--domain=<OP_DOMAIN>] <FOLDERS/TAGS> ...
+env-secrets [bw || 1p] [--domain=<OP_DOMAIN>] <FOLDERS/TAGS> ...
 ```
 
 **NB**: The op command needs an additional flag `--domain` corresponding to the subdomain of your vault's URL.

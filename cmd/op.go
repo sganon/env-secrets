@@ -16,8 +16,9 @@ const (
 // NewOP returns the subcommand handling 1password vaults
 func NewOP() cli.Command {
 	cmd := cli.Command{
-		Name:  "op",
-		Usage: "Get secrets from your 1password vault",
+		Name:    "op",
+		Aliases: []string{"1p"},
+		Usage:   "Get secrets from your 1password vault",
 		Flags: []cli.Flag{
 			cli.StringFlag{
 				Name:  domainNameFlagName,
